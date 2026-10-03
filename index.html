@@ -1,0 +1,419 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Maricel Meneses Gómez</title>
+<meta name="description" content="Maricel Meneses Gómez · Bioestadística y análisis de datos · 10 años de docencia universitaria en Computación y Estadística · Investigadora principal de S.Y.N.A.P.S.E.">
+<meta property="og:title" content="Maricel Meneses Gómez · Bioestadística y análisis de datos">
+<meta property="og:description" content="Estadística aplicada a la salud, análisis de supervivencia y datos sintéticos. Investigadora principal de S.Y.N.A.P.S.E.">
+<meta property="og:image" content="assets/synapse-inicio.png">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230A5CFF'/%3E%3Cpath d='M12 18h10v8h8v8h8v8h14' fill='none' stroke='white' stroke-width='5' stroke-linejoin='round'/%3E%3C/svg%3E">
+<style>
+/* Layout: una columna de lectura (máx. 1080 px) con portada a dos columnas: presentación a la izquierda,
+   tablero de Galton vivo a la derecha. Lenguaje Apple: fuente del sistema, cristal en la barra, un acento. */
+:root{
+  --bg:#f5f5f7; --surface:#ffffff; --surface-2:#fbfbfd; --ink:#1d1d1f; --ink-2:#424245; --muted:#6e6e73;
+  --line:#e5e5ea; --line-2:#d2d2d7; --accent:#0a5cff; --accent-2:#0047d6; --accent-soft:#e8efff;
+  --mint:#14b8a6; --glass:rgba(245,245,247,.72); --shadow:0 1px 2px rgba(0,0,0,.04),0 10px 30px -12px rgba(0,0,0,.14);
+  --f:-apple-system,BlinkMacSystemFont,"SF Pro Text","SF Pro Display","Segoe UI Variable Text","Segoe UI",system-ui,Roboto,"Helvetica Neue",Arial,sans-serif;
+  --mono:ui-monospace,"SF Mono",SFMono-Regular,Menlo,Consolas,monospace;
+  --ease:cubic-bezier(.23,1,.32,1); --r:18px;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#000000; --surface:#1c1c1e; --surface-2:#161618; --ink:#f5f5f7; --ink-2:#d1d1d6; --muted:#a1a1a6;
+  --line:#2c2c2e; --line-2:#3a3a3c; --accent:#3d7dff; --accent-2:#6b9bff; --accent-soft:#0e1f45;
+  --mint:#2dd4bf; --glass:rgba(22,22,24,.72); --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 30px -12px rgba(0,0,0,.7); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#000000; --surface:#1c1c1e; --surface-2:#161618; --ink:#f5f5f7; --ink-2:#d1d1d6; --muted:#a1a1a6;
+  --line:#2c2c2e; --line-2:#3a3a3c; --accent:#3d7dff; --accent-2:#6b9bff; --accent-soft:#0e1f45;
+  --mint:#2dd4bf; --glass:rgba(22,22,24,.72); --shadow:0 1px 2px rgba(0,0,0,.5),0 10px 30px -12px rgba(0,0,0,.7); color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 var(--f);letter-spacing:-.011em;-webkit-font-smoothing:antialiased}
+a{color:var(--accent-2);text-decoration:none}a:hover{text-decoration:underline}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+.wrap{max-width:1080px;margin:0 auto;padding-inline:max(16px,4vw)}
+.num{font-variant-numeric:tabular-nums}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+
+/* Barra */
+.bar{position:sticky;top:calc(10px + env(safe-area-inset-top,0px));z-index:20;margin:10px auto 0;max-width:1080px;padding-inline:max(16px,4vw)}
+.bar-in{display:flex;align-items:center;gap:16px;height:52px;padding:0 8px 0 18px;border-radius:999px;background:var(--glass);
+  -webkit-backdrop-filter:blur(20px) saturate(1.8);backdrop-filter:blur(20px) saturate(1.8);border:1px solid var(--line);box-shadow:var(--shadow)}
+.brand{font-weight:600;font-size:.95rem;color:var(--ink);white-space:nowrap}
+.bar nav{display:flex;gap:18px;margin-left:auto;font-size:.85rem;overflow-x:auto;scrollbar-width:none}
+.bar nav a{color:var(--ink-2);white-space:nowrap}.bar nav a:hover{color:var(--ink);text-decoration:none}
+.lang{display:inline-flex;border:1px solid var(--line-2);border-radius:999px;overflow:hidden;flex:none}
+.lang button{all:unset;cursor:pointer;padding:6px 10px;font:600 .72rem/1 var(--mono);color:var(--muted)}
+.lang button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.lang button:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* Portada */
+.hero{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:40px;align-items:center;padding-block:clamp(40px,7vw,88px) 32px}
+.who{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+.photo{width:76px;height:76px;border-radius:50%;object-fit:cover;background:var(--accent);box-shadow:0 0 0 4px var(--surface),0 0 0 5px var(--line-2);flex:none}
+.initials{width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#fff;font-weight:700;font-size:1.6rem;letter-spacing:.02em;box-shadow:0 0 0 4px var(--surface),0 0 0 5px var(--line-2);flex:none}
+.status{display:inline-flex;align-items:center;gap:8px;font-size:.82rem;color:var(--ink-2);background:var(--surface);border:1px solid var(--line);padding:5px 12px;border-radius:999px}
+.status i{width:8px;height:8px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 3px rgba(34,197,94,.18)}
+.hero h1{font-size:clamp(2.4rem,5.4vw,4.1rem);line-height:1.02;letter-spacing:-.04em;font-weight:700}
+.hero h1 span{color:var(--accent)}
+.role{margin-top:14px;font-size:clamp(1.05rem,1.9vw,1.25rem);color:var(--ink-2);letter-spacing:-.016em;max-width:34ch}
+.lede{margin-top:18px;color:var(--muted);max-width:52ch}
+.cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+.btn{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 18px;border-radius:999px;font-weight:600;font-size:.92rem;border:1px solid var(--line-2);background:var(--surface);color:var(--ink);transition:transform 140ms var(--ease),background-color .15s}
+.btn:hover{text-decoration:none;background:var(--surface-2)}.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}.btn.primary:hover{background:var(--accent-2)}
+.btn svg{flex:none}
+.galton{background:var(--surface);border:1px solid var(--line);border-radius:24px;box-shadow:var(--shadow);padding:16px 16px 12px}
+.galton canvas{display:block;width:100%;aspect-ratio:1/1;max-width:100%}
+.galton figcaption{display:flex;justify-content:space-between;gap:10px;font:500 .78rem/1.3 var(--mono);color:var(--muted);margin-top:8px;flex-wrap:wrap}
+
+/* Cifras */
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;margin-block:8px 24px}
+.stat{padding:22px 20px;border-right:1px solid var(--line)}.stat:last-child{border-right:0}
+.stat b{display:block;font-size:2.1rem;letter-spacing:-.04em;line-height:1;font-weight:700}
+.stat span{display:block;margin-top:8px;color:var(--muted);font-size:.88rem;line-height:1.35}
+
+/* Secciones */
+section{padding-block:44px}
+.eyebrow{font:600 .74rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent-2);margin-bottom:10px}
+h2{font-size:clamp(1.7rem,3.4vw,2.4rem);letter-spacing:-.032em;line-height:1.08}
+.sub{color:var(--muted);margin-top:10px;max-width:62ch}
+.about{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:40px;margin-top:22px}
+.about p{color:var(--ink-2);max-width:62ch}.about p+p{margin-top:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-size:.84rem;padding:6px 12px;border-radius:999px;background:var(--surface);border:1px solid var(--line);color:var(--ink-2)}
+.chip.k{background:var(--accent-soft);border-color:transparent;color:var(--accent-2);font-weight:600}
+.skills h3{font:600 .74rem/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 10px}
+.skills>div+div{margin-top:20px}
+
+/* Proyecto */
+.project{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:0;background:var(--surface);border:1px solid var(--line);border-radius:24px;overflow:hidden;box-shadow:var(--shadow);margin-top:24px}
+.project .body{padding:30px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.project h3{font-size:1.6rem;letter-spacing:-.03em}
+.project .tag{align-self:flex-start;font:600 .72rem/1 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--accent);padding:6px 10px;border-radius:999px}
+.project ul{margin:0;padding-left:18px;color:var(--ink-2);display:grid;gap:6px;font-size:.95rem}
+.project .shot{background:var(--surface-2);border-left:1px solid var(--line);display:flex;align-items:center;padding:18px;min-width:0}
+.project .shot img{width:100%;border-radius:12px;border:1px solid var(--line);box-shadow:var(--shadow);display:block}
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:6px}
+.next{margin-top:16px;display:flex;gap:16px;align-items:flex-start;padding:20px 22px;border:1px dashed var(--line-2);border-radius:var(--r)}
+.next b{display:block}.next p{color:var(--muted);font-size:.93rem;margin-top:4px}
+.next svg{color:var(--accent);flex:none;margin-top:2px}
+
+/* Línea temporal */
+.timeline{margin-top:24px;display:grid;gap:0;border-left:2px solid var(--line);padding-left:26px}
+.item{position:relative;padding-bottom:26px}.item:last-child{padding-bottom:0}
+.item::before{content:"";position:absolute;left:-33px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.item.muted::before{border-color:var(--line-2)}
+.item .when{font:500 .8rem/1 var(--mono);color:var(--muted)}
+.item h3{font-size:1.1rem;letter-spacing:-.02em;margin-top:6px}
+.item .org{color:var(--ink-2);font-size:.95rem}
+.item p{color:var(--muted);font-size:.93rem;margin-top:6px;max-width:66ch}
+.edu{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;min-width:0}
+.card .when{font:500 .8rem/1 var(--mono);color:var(--muted)}
+.card h3{font-size:1.1rem;letter-spacing:-.02em;margin-top:8px}.card p{color:var(--ink-2);font-size:.93rem;margin-top:4px}
+
+/* Certificaciones */
+.certs{margin-top:24px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.cert{display:grid;grid-template-columns:40px minmax(0,1fr) auto;gap:14px;align-items:center;padding:14px 18px;border-bottom:1px solid var(--line)}
+.cert:last-child{border-bottom:0}
+.cert .logo{width:40px;height:40px;border-radius:10px;background:var(--accent-soft);display:grid;place-items:center;font:700 .72rem/1 var(--mono);color:var(--accent-2)}
+.cert b{display:block;font-size:.97rem;font-weight:600}.cert small{color:var(--muted);font-family:var(--mono);font-size:.74rem}
+.cert a{font-size:.85rem;white-space:nowrap}
+
+/* Divulgación */
+.posts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:24px}
+.post{display:flex;flex-direction:column;gap:10px;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;color:var(--ink);transition:transform 160ms var(--ease),box-shadow .2s}
+.post:hover{text-decoration:none;transform:translateY(-2px);box-shadow:var(--shadow)}
+.post .when{font:500 .78rem/1 var(--mono);color:var(--muted)}
+.post b{font-size:1.02rem;letter-spacing:-.016em;line-height:1.3}
+.post span{color:var(--muted);font-size:.9rem}
+.post em{font-style:normal;color:var(--accent-2);font-weight:600;font-size:.88rem;margin-top:auto}
+
+/* Contacto */
+.contact{margin-top:24px;background:var(--accent);color:#fff;border-radius:28px;padding:clamp(28px,5vw,48px);display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:24px;align-items:center}
+.contact h2{color:#fff}.contact p{color:rgba(255,255,255,.88);margin-top:12px;max-width:52ch}
+.contact .links{justify-content:flex-end}
+.contact .btn{background:#fff;color:#0a2a6e;border-color:#fff}.contact .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.55)}
+footer{padding-block:28px 48px;color:var(--muted);font-size:.82rem}
+
+@media (max-width:900px){
+  .hero,.about,.project,.contact{grid-template-columns:1fr}
+  .project .shot{border-left:0;border-top:1px solid var(--line)}
+  .posts{grid-template-columns:1fr}.edu{grid-template-columns:1fr}
+  .stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat:nth-child(2){border-right:0}.stat:nth-child(-n+2){border-bottom:1px solid var(--line)}
+  .contact .links{justify-content:flex-start}.bar nav{display:none}.lang{margin-left:auto}
+}
+@media (max-width:480px){.cert{grid-template-columns:40px minmax(0,1fr)}.cert a{grid-column:2}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+@media (prefers-reduced-transparency:reduce){.bar-in{background:var(--surface);-webkit-backdrop-filter:none;backdrop-filter:none}}
+</style>
+</head>
+<body>
+<header class="bar"><div class="bar-in">
+  <span class="brand">Maricel Meneses</span>
+  <nav aria-label="Secciones">
+    <a href="#sobre" data-i="nav.about">Sobre mí</a><a href="#proyectos" data-i="nav.projects">Proyectos</a>
+    <a href="#experiencia" data-i="nav.exp">Experiencia</a><a href="#certificaciones" data-i="nav.certs">Certificaciones</a><a href="#contacto" data-i="nav.contact">Contacto</a>
+  </nav>
+  <div class="lang" role="group" aria-label="Idioma"><button type="button" data-lang="es" aria-pressed="true">ES</button><button type="button" data-lang="en" aria-pressed="false">EN</button></div>
+</div></header>
+
+<main class="wrap">
+  <section class="hero" aria-labelledby="nombre">
+    <div>
+      <div class="who">
+        <img class="photo" src="assets/maricel.jpg" alt="Maricel Meneses Gómez" width="76" height="76" onerror="this.outerHTML='<span class=&quot;initials&quot; aria-hidden=&quot;true&quot;>MM</span>'">
+        <span class="status"><i aria-hidden="true"></i><span data-i="status">Disponible · Huelva, híbrido o remoto</span></span>
+      </div>
+      <h1 id="nombre">Maricel <span>Meneses</span> Gómez</h1>
+      <p class="role" data-i="role">Bioestadística y análisis de datos. Diez años enseñando Computación y Estadística en la universidad.</p>
+      <p class="lede" data-i="lede">Convierto datos complejos en conclusiones claras y defendibles. Hoy dirijo S.Y.N.A.P.S.E., una investigación sobre si los datos sanitarios sintéticos conservan las conclusiones clínicas sin exponer a los pacientes.</p>
+      <div class="cta">
+        <a class="btn primary" href="#proyectos"><span data-i="cta.project">Ver S.Y.N.A.P.S.E.</span></a>
+        <a class="btn" href="https://www.linkedin.com/in/maricel9002/" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>LinkedIn</a>
+        <a class="btn" href="https://github.com/maricelmeneses" target="_blank" rel="noopener"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 0-.8.4-1.3.7-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.2.5-2.3 1.3-3.1-.2-.4-.6-1.6 0-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.7 1.6.2 2.9.1 3.2.8.8 1.3 1.9 1.3 3.1 0 4.6-2.8 5.6-5.5 5.9.5.4.9 1.1.9 2.2v3.3c0 .3.1.7.8.6A12 12 0 0 0 12 .3"/></svg>GitHub</a>
+      </div>
+    </div>
+    <figure class="galton" aria-labelledby="galton-cap">
+      <canvas id="galton" width="640" height="640" role="img" aria-label="Tablero de Galton: las bolas caen entre clavos y su acumulación dibuja una distribución normal"></canvas>
+      <figcaption id="galton-cap"><span data-i="galton">Tablero de Galton · binomial(12; 0,5) → normal</span><span class="num" id="galton-n">n = 0</span></figcaption>
+    </figure>
+  </section>
+
+  <div class="stats" role="list">
+    <div class="stat" role="listitem"><b class="num">10</b><span data-i="s1">años de docencia universitaria en Computación y Estadística</span></div>
+    <div class="stat" role="listitem"><b class="num">2</b><span data-i="s2">universidades, una de ellas de Ciencias Médicas</span></div>
+    <div class="stat" role="listitem"><b class="num">8</b><span data-i="s3">certificaciones IBM en análisis de datos con Python y SQL</span></div>
+    <div class="stat" role="listitem"><b class="num">320</b><span data-i="s4">evaluaciones completas en el estudio piloto de S.Y.N.A.P.S.E.</span></div>
+  </div>
+
+  <section id="sobre" aria-labelledby="h-sobre">
+    <p class="eyebrow" data-i="about.eye">Sobre mí</p>
+    <h2 id="h-sobre" data-i="about.h">Rigor estadístico y capacidad para explicarlo</h2>
+    <div class="about">
+      <div>
+        <p data-i="about.p1">Soy licenciada en Ciencias de la Computación y máster en Computación Aplicada por la Universidad Central «Marta Abreu» de Las Villas. Durante diez años enseñé Computación y Estadística en la universidad; los últimos cinco, en la Universidad de Ciencias Médicas de Villa Clara, con estudiantes de ciencias de la salud.</p>
+        <p data-i="about.p2">Esa etapa me dio lo que hoy aplico al análisis de datos: elegir el modelo adecuado, desconfiar de las conclusiones fáciles y traducir resultados técnicos en decisiones claras. Me interesan especialmente la bioestadística, los datos del mundo real (RWD) y el análisis de supervivencia.</p>
+        <p data-i="about.p3">Busco oportunidades en análisis de datos, investigación, apoyo académico u operaciones donde los datos, el orden y la mejora continua sean la clave.</p>
+      </div>
+      <div class="skills">
+        <div><h3 data-i="sk.stats">Estadística</h3><div class="chips">
+          <span class="chip k">Análisis de supervivencia</span><span class="chip k">Kaplan-Meier · Cox</span><span class="chip">Inferencia</span><span class="chip">Regresión</span><span class="chip">Diseño de estudios</span><span class="chip">Simulación Monte Carlo</span></div></div>
+        <div><h3 data-i="sk.data">Datos</h3><div class="chips">
+          <span class="chip k">Python</span><span class="chip">pandas</span><span class="chip">NumPy</span><span class="chip">SQL</span><span class="chip">Jupyter</span><span class="chip">matplotlib</span><span class="chip">lifelines</span><span class="chip">scikit-survival</span></div></div>
+        <div><h3 data-i="sk.soft">Comunicación</h3><div class="chips">
+          <span class="chip">Docencia universitaria</span><span class="chip">Divulgación científica</span><span class="chip">Trabajo en equipo</span><span class="chip">Resolución de problemas</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="proyectos" aria-labelledby="h-proy">
+    <p class="eyebrow" data-i="proj.eye">Proyecto destacado</p>
+    <h2 id="h-proy">S.Y.N.A.P.S.E.</h2>
+    <p class="sub" data-i="proj.sub">¿Se puede compartir un ensayo clínico sin compartir a sus pacientes? Una investigación que une bioestadística y privacidad ofensiva.</p>
+    <article class="project">
+      <div class="body">
+        <span class="tag" data-i="proj.tag">Investigadora principal</span>
+        <h3 data-i="proj.h">Validez inferencial y riesgo de reidentificación de datos sanitarios sintéticos</h3>
+        <ul>
+          <li data-i="proj.l1">Diseño de un estudio de simulación sobre 4 estudios clínicos reales: 8 generadores × 10 réplicas, 320 evaluaciones.</li>
+          <li data-i="proj.l2">Validez inferencial con curvas de Kaplan-Meier, modelos de Cox, solapamiento de intervalos y reglas de combinación.</li>
+          <li data-i="proj.l3">Hallazgo: ningún generador es a la vez útil y seguro de forma sistemática; la privacidad diferencial con ε ≤ 1 rompe las conclusiones del modelo de Cox.</li>
+          <li data-i="proj.l4">Con Yoandy Ramírez Delgado, que lidera los ataques de reidentificación y el marco normativo.</li>
+        </ul>
+        <div class="chips"><span class="chip">Python</span><span class="chip">lifelines</span><span class="chip">scikit-survival</span><span class="chip">pandas</span><span class="chip">RGPD · EHDS</span></div>
+        <div class="links">
+          <a class="btn primary" href="https://github.com/maricelmeneses/synapse" target="_blank" rel="noopener" data-i="proj.repo">Ver el repositorio</a>
+          <a class="btn" href="https://maricelmeneses.github.io/synapse/site/" target="_blank" rel="noopener" data-i="proj.app">Abrir el explorador</a>
+        </div>
+      </div>
+      <div class="shot"><img src="assets/synapse-panel.png" alt="Panel del explorador de S.Y.N.A.P.S.E.: frente utilidad-privacidad y ficha del generador" loading="lazy" width="1440" height="900"></div>
+    </article>
+    <div class="next">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v16a2 2 0 0 0 2 2h16"/><path d="M7 11h4v4h4v4"/></svg>
+      <div><b data-i="next.h">En preparación · Supervivencia de vulnerabilidades en hospitales</b>
+      <p data-i="next.p">Análisis de supervivencia y riesgos competitivos para medir cuánto tarda en cerrarse una vulnerabilidad en una red hospitalaria y qué variables lo aceleran o lo frenan.</p></div>
+    </div>
+  </section>
+
+  <section id="experiencia" aria-labelledby="h-exp">
+    <p class="eyebrow" data-i="exp.eye">Experiencia</p>
+    <h2 id="h-exp" data-i="exp.h">Una década enseñando a pensar con datos</h2>
+    <div class="timeline">
+      <div class="item"><span class="when num">2026 —</span><h3 data-i="e0.h">Investigadora principal · S.Y.N.A.P.S.E.</h3><p class="org" data-i="e0.o">Proyecto de investigación independiente</p>
+        <p data-i="e0.p">Diseño del estudio, validez inferencial y análisis de supervivencia sobre datos sanitarios sintéticos.</p></div>
+      <div class="item"><span class="when num">2018 — 2023</span><h3 data-i="e1.h">Profesora universitaria de Computación y Estadística</h3><p class="org">Universidad de Ciencias Médicas de Villa Clara · Santa Clara, Cuba</p>
+        <p data-i="e1.p">Docencia de Computación y Estadística para estudiantes de ciencias de la salud: estadística descriptiva e inferencial aplicada a datos clínicos, diseño de contenidos digitales y tutorías.</p></div>
+      <div class="item"><span class="when num">2013 — 2018</span><h3 data-i="e2.h">Profesora universitaria</h3><p class="org">Universidad Central «Marta Abreu» de Las Villas</p>
+        <p data-i="e2.p">Docencia en Ciencias de la Computación, elaboración de materiales y acompañamiento de estudiantes.</p></div>
+      <div class="item muted"><span class="when num">2025 —</span><h3 data-i="e3.h">Atención al cliente y operaciones</h3><p class="org">D'Hogar SL · Lepe, Huelva</p>
+        <p data-i="e3.p">Experiencia en servicio, organización y trabajo bajo presión en España, en paralelo a mi transición al análisis de datos.</p></div>
+    </div>
+    <div class="edu">
+      <div class="card"><span class="when num">2014 — 2017</span><h3 data-i="ed1">Máster en Computación Aplicada</h3><p>Universidad Central «Marta Abreu» de Las Villas</p></div>
+      <div class="card"><span class="when num">2008 — 2013</span><h3 data-i="ed2">Licenciatura en Ciencias de la Computación</h3><p>Universidad Central «Marta Abreu» de Las Villas</p></div>
+    </div>
+  </section>
+
+  <section id="certificaciones" aria-labelledby="h-cert">
+    <p class="eyebrow" data-i="cert.eye">Certificaciones</p>
+    <h2 id="h-cert" data-i="cert.h">IBM · análisis de datos con Python y SQL</h2>
+    <div class="certs" id="certs"></div>
+  </section>
+
+  <section id="divulgacion" aria-labelledby="h-div">
+    <p class="eyebrow" data-i="div.eye">Divulgación</p>
+    <h2 id="h-div" data-i="div.h">Escribo sobre bioestadística y datos de salud</h2>
+    <div class="posts">
+      <a class="post" href="https://www.linkedin.com/feed/update/urn:li:activity:7511915585262305280/" target="_blank" rel="noopener"><span class="when">LinkedIn · oct. 2026</span><b>¿Se puede compartir un ensayo clínico sin exponer a sus pacientes?</b><span>Presentación de S.Y.N.A.P.S.E. y primeros resultados del piloto.</span><em data-i="read">Leer →</em></a>
+      <a class="post" href="https://www.linkedin.com/feed/update/urn:li:activity:7511515820695678976/" target="_blank" rel="noopener"><span class="when">LinkedIn · oct. 2026</span><b>Modelos de ensayos clínicos aplicados a la ciberseguridad</b><span>Kaplan-Meier para medir cuánto vive una vulnerabilidad en un hospital.</span><em data-i="read">Leer →</em></a>
+      <a class="post" href="https://www.linkedin.com/feed/update/urn:li:activity:7511508699849453569/" target="_blank" rel="noopener"><span class="when">LinkedIn · oct. 2026</span><b>Datos del mundo real (RWD) en decisiones clínicas</b><span>Rigor metodológico para extraer valor de datos heterogéneos y ruidosos.</span><em data-i="read">Leer →</em></a>
+    </div>
+  </section>
+
+  <section id="contacto" aria-labelledby="h-con">
+    <div class="contact">
+      <div><h2 id="h-con" data-i="con.h">¿Hablamos?</h2>
+        <p data-i="con.p">Abierta a oportunidades en análisis de datos, bioestadística, investigación y formación. Huelva, híbrido o remoto.</p></div>
+      <div class="links">
+        <a class="btn" href="https://www.linkedin.com/in/maricel9002/" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn ghost" href="https://github.com/maricelmeneses" target="_blank" rel="noopener">GitHub</a>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="wrap">© 2026 Maricel Meneses Gómez · <span data-i="foot">Lepe, Huelva · Hecho con la fuente del sistema, sin rastreadores</span></footer>
+
+<script>
+(() => {
+  'use strict';
+  /* ── Certificaciones (enlaces de verificación de Coursera) ── */
+  const CERTS = [
+    ['IBM Data Analyst', 'Professional Certificate', 'professional-cert/V2GBTU8QS4VC'],
+    ['IBM Data Analyst Capstone Project', 'D5NR8BV7IDYT', 'verify/D5NR8BV7IDYT'],
+    ['Data Analysis with Python', 'A9C1F5AMQQJA · feb. 2026', 'verify/A9C1F5AMQQJA'],
+    ['Databases and SQL for Data Science with Python', '6MMR73TL0UCD · feb. 2026', 'verify/6MMR73TL0UCD'],
+    ['Python for Data Science, AI & Development', 'GKXUBKXJ94C7 · feb. 2026', 'verify/GKXUBKXJ94C7'],
+    ['Data Visualization with Python', '81TE215QQP45', 'verify/81TE215QQP45'],
+    ['Generative AI: Enhance your Data Analytics Career', '3Z77ZOFFLMKZ', 'verify/3Z77ZOFFLMKZ'],
+    ['Data Analyst Career Guide and Interview Preparation', 'M1SSAK30EKDV', 'verify/M1SSAK30EKDV'],
+  ];
+  document.getElementById('certs').innerHTML = CERTS.map(([n, id, path]) =>
+    `<div class="cert"><span class="logo" aria-hidden="true">IBM</span><div><b>${n}</b><small>${id}</small></div>` +
+    `<a href="https://www.coursera.org/account/accomplishments/${path}" target="_blank" rel="noopener" data-i="verify">Verificar →</a></div>`).join('');
+
+  /* ── Idioma ── */
+  const EN = {
+    'nav.about': 'About', 'nav.projects': 'Projects', 'nav.exp': 'Experience', 'nav.certs': 'Certifications', 'nav.contact': 'Contact',
+    status: 'Open to work · Huelva, hybrid or remote',
+    role: 'Biostatistics and data analysis. Ten years teaching Computing and Statistics at university.',
+    lede: 'I turn complex data into clear, defensible conclusions. I lead S.Y.N.A.P.S.E., a study of whether synthetic health data preserve clinical conclusions without exposing patients.',
+    'cta.project': 'See S.Y.N.A.P.S.E.', galton: 'Galton board · binomial(12, 0.5) → normal',
+    s1: 'years teaching Computing and Statistics at university', s2: 'universities, one of them of Medical Sciences',
+    s3: 'IBM certifications in data analysis with Python and SQL', s4: 'full evaluations in the S.Y.N.A.P.S.E. pilot study',
+    'about.eye': 'About me', 'about.h': 'Statistical rigour, and the ability to explain it',
+    'about.p1': 'I hold a BSc in Computer Science and an MSc in Applied Computing from the Central University "Marta Abreu" of Las Villas. For ten years I taught Computing and Statistics at university, the last five at the University of Medical Sciences of Villa Clara, with health-science students.',
+    'about.p2': 'That experience gave me what I now bring to data analysis: choosing the right model, distrusting easy conclusions and turning technical results into clear decisions. I am especially interested in biostatistics, real-world data (RWD) and survival analysis.',
+    'about.p3': 'I am looking for roles in data analysis, research, academic support or operations where data, order and continuous improvement are key.',
+    'sk.stats': 'Statistics', 'sk.data': 'Data', 'sk.soft': 'Communication',
+    'proj.eye': 'Featured project', 'proj.sub': 'Can you share a clinical trial without sharing its patients? A study that brings together biostatistics and offensive privacy.',
+    'proj.tag': 'Principal investigator', 'proj.h': 'Inferential validity and re-identification risk of synthetic health data',
+    'proj.l1': 'Design of a simulation study on 4 real clinical studies: 8 generators × 10 replicates, 320 evaluations.',
+    'proj.l2': 'Inferential validity with Kaplan-Meier curves, Cox models, interval overlap and combining rules.',
+    'proj.l3': 'Finding: no generator is systematically both useful and safe; differential privacy with ε ≤ 1 breaks the conclusions of the Cox model.',
+    'proj.l4': 'With Yoandy Ramírez Delgado, who leads the re-identification attacks and the regulatory framework.',
+    'proj.repo': 'View the repository', 'proj.app': 'Open the explorer',
+    'next.h': 'In preparation · Survival of vulnerabilities in hospitals',
+    'next.p': 'Survival analysis and competing risks to measure how long a vulnerability stays open in a hospital network and which variables speed it up or slow it down.',
+    'exp.eye': 'Experience', 'exp.h': 'A decade teaching people to think with data',
+    'e0.h': 'Principal investigator · S.Y.N.A.P.S.E.', 'e0.o': 'Independent research project', 'e0.p': 'Study design, inferential validity and survival analysis on synthetic health data.',
+    'e1.h': 'University lecturer in Computing and Statistics', 'e1.p': 'Teaching Computing and Statistics to health-science students: descriptive and inferential statistics applied to clinical data, digital course design and tutoring.',
+    'e2.h': 'University lecturer', 'e2.p': 'Teaching Computer Science, course materials and student mentoring.',
+    'e3.h': 'Customer service and operations', 'e3.p': 'Service, organisation and working under pressure in Spain, alongside my move into data analysis.',
+    ed1: 'MSc in Applied Computing', ed2: 'BSc in Computer Science',
+    'cert.eye': 'Certifications', 'cert.h': 'IBM · data analysis with Python and SQL', verify: 'Verify →',
+    'div.eye': 'Writing', 'div.h': 'I write about biostatistics and health data', read: 'Read →',
+    'con.h': "Let's talk", 'con.p': 'Open to roles in data analysis, biostatistics, research and training. Huelva, hybrid or remote.',
+    foot: 'Lepe, Huelva · Built with the system font, no trackers',
+  };
+  const ES = {};
+  document.querySelectorAll('[data-i]').forEach((el) => { ES[el.dataset.i] = el.textContent; });
+  function setLang(l) {
+    document.documentElement.lang = l;
+    document.querySelectorAll('[data-i]').forEach((el) => { const k = el.dataset.i; const t = l === 'en' ? EN[k] : ES[k]; if (t) el.textContent = t; });
+    document.querySelectorAll('.lang button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+    try { localStorage.setItem('mm-lang', l); } catch (e) { /* sin almacenamiento */ }
+  }
+  document.querySelectorAll('.lang button').forEach((b) => b.addEventListener('click', () => setLang(b.dataset.lang)));
+  try { const saved = localStorage.getItem('mm-lang'); if (saved === 'en') setLang('en'); } catch (e) { /* n/a */ }
+
+  /* ── Tablero de Galton: 12 filas de clavos; cada bola elige izquierda o derecha con p = 0,5 ── */
+  const cv = document.getElementById('galton'), ctx = cv.getContext('2d'), nEl = document.getElementById('galton-n');
+  const ROWS = 12, BINS = ROWS + 1, W = cv.width, H = cv.height;
+  const css = (v) => getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const top = 46, pegH = 22, gap = (W - 120) / BINS, x0 = 60, binTop = top + ROWS * pegH + 26, binBottom = H - 34;
+  const counts = new Array(BINS).fill(0);
+  let balls = [], total = 0;
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const binom = (k) => { let c = 1; for (let i = 0; i < k; i++) c = c * (ROWS - i) / (i + 1); return c / 2 ** ROWS; };
+  function spawn() { balls.push({ row: 0, pos: 0, t: 0, path: Array.from({ length: ROWS }, () => (Math.random() < 0.5 ? 0 : 1)) }); }
+  function pegX(row, i) { return W / 2 + (i - row / 2) * gap; }
+  function draw() {
+    const ink = css('--ink-2'), muted = css('--line-2'), acc = css('--accent'), mint = css('--mint');
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = muted;
+    for (let r = 0; r < ROWS; r++) for (let i = 0; i <= r; i++) { ctx.beginPath(); ctx.arc(pegX(r, i), top + r * pegH, 2.6, 0, Math.PI * 2); ctx.fill(); }
+    const maxC = Math.max(1, ...counts), maxP = binom(ROWS / 2), scaleH = (binBottom - binTop) / Math.max(maxC, total * maxP * 1.05);
+    for (let k = 0; k < BINS; k++) {
+      const h = counts[k] * scaleH, x = x0 + k * gap;
+      ctx.fillStyle = acc; ctx.globalAlpha = .9;
+      ctx.beginPath(); ctx.roundRect(x + 3, binBottom - h, gap - 6, h, [4, 4, 0, 0]); ctx.fill(); ctx.globalAlpha = 1;
+    }
+    if (total > 20) {  // densidad teórica escalada a los conteos
+      ctx.strokeStyle = mint; ctx.lineWidth = 3; ctx.beginPath();
+      for (let s = 0; s <= 200; s++) {
+        const k = s / 200 * ROWS, mu = ROWS / 2, sd = Math.sqrt(ROWS) / 2;
+        const p = Math.exp(-((k - mu) ** 2) / (2 * sd * sd)) / (sd * Math.sqrt(2 * Math.PI));
+        const x = x0 + (k + .5) * gap, y = binBottom - total * p * scaleH;
+        s ? ctx.lineTo(x, y) : ctx.moveTo(x, y);
+      }
+      ctx.stroke();
+    }
+    ctx.strokeStyle = muted; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x0, binBottom + .5); ctx.lineTo(W - x0, binBottom + .5); ctx.stroke();
+    ctx.fillStyle = ink; ctx.font = `500 15px ${css('--mono')}`; ctx.textAlign = 'center';
+    ctx.fillText('μ', W / 2, binBottom + 22);
+    ctx.fillStyle = acc;
+    for (const b of balls) {
+      const r = Math.min(b.row, ROWS - 1), done = b.path.slice(0, r).reduce((a, c) => a + c, 0);
+      const xa = pegX(r, done), xb = pegX(r + 1, done + b.path[r]), ya = top + r * pegH, yb = ya + pegH;
+      ctx.beginPath(); ctx.arc(xa + (xb - xa) * b.t, ya + (yb - ya) * b.t - 8, 5, 0, Math.PI * 2); ctx.fill();
+    }
+    nEl.textContent = `n = ${total.toLocaleString(document.documentElement.lang === 'en' ? 'en-GB' : 'es-ES')}`;
+  }
+  function settle(b) { counts[b.path.reduce((a, c) => a + c, 0)]++; total++; }
+  if (reduce) {
+    for (let i = 0; i < 1200; i++) { const b = { path: Array.from({ length: ROWS }, () => (Math.random() < 0.5 ? 0 : 1)) }; settle(b); }
+    draw();
+  } else {
+    let last = performance.now(), acc = 0;
+    function frame(now) {
+      const dt = Math.min(48, now - last); last = now; acc += dt;
+      while (acc > 55) { spawn(); acc -= 55; }
+      for (const b of balls) { b.t += dt / 70; if (b.t >= 1) { b.t = 0; b.row++; } }
+      balls = balls.filter((b) => { if (b.row >= ROWS) { settle(b); return false; } return true; });
+      if (total >= 1500) { counts.fill(0); total = 0; }
+      draw();
+      if (!document.hidden) requestAnimationFrame(frame); else last = performance.now();
+    }
+    requestAnimationFrame(frame);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { last = performance.now(); requestAnimationFrame(frame); } });
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', draw);
+  }
+})();
+</script>
+</body>
+</html>
