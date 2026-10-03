@@ -19,7 +19,7 @@ import random
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageDraw, ImageEnhance, ImageFilter, ImageFont, ImageOps
+from PIL import Image, ImageDraw, ImageFilter, ImageFont, ImageOps
 
 ROOT = Path(__file__).resolve().parent
 SRC = ROOT / "assets" / "source" / "retrato.jpg"
@@ -65,16 +65,55 @@ def placeholder(size: int = 600) -> Image.Image:
         font = ImageFont.truetype("DejaVuSans-Bold.ttf", int(size * .16))
     except OSError:
         font = ImageFont.load_default()
+    shape = Image.new("L", (size, size), 0)
+    for box in ((size * .30, size * .14, size * .70, size * .56), (size * .12, size * .58, size * .88, size * 1.25)):
+        ImageDraw.Draw(shape).ellipse(box, fill=255)
     d.text((size / 2, size * .35), "MM", fill=235, font=font, anchor="mm")
-    return img
+    out = img.convert("RGBA")
+    out.putalpha(shape)
+    return out
 
 
-def dither(img: Image.Image, w: int, h: int) -> np.ndarray:
-    """Recorte centrado, contraste y difusión de error de Floyd-Steinberg → matriz booleana (True = punto)."""
-    g = ImageOps.exif_transpose(img).convert("L")
-    g = ImageOps.fit(g, (w * 4, h * 4), method=Image.LANCZOS, centering=(0.5, 0.35))
-    g = ImageOps.autocontrast(g, cutoff=2)
-    g = ImageEnhance.Contrast(g).enhance(1.25).filter(ImageFilter.UnsharpMask(radius=2, percent=120))
+def remove_background(img: Image.Image) -> Image.Image:
+    """Aclara el fondo de estudio del retrato: los píxeles grises neutros (sin saturación, luminosidad media)
+    conectados con el borde pasan a blanco, para que la difusión de error no convierta el fondo en ruido.
+    El pelo castaño tiene saturación y la chaqueta es casi negra, así que ninguno de los dos se confunde."""
+    rgb = np.asarray(img.convert("RGB"), dtype=float)
+    h, w, _ = rgb.shape
+    lum = rgb.mean(axis=2)
+    neutral = (rgb.max(axis=2) - rgb.min(axis=2) < 14) & (lum > 45) & (lum < 150)
+    seen = np.zeros((h, w), dtype=bool)
+    stack = [(y, x) for y in range(h) for x in (0, w - 1)] + [(0, x) for x in range(w)]
+    while stack:
+        y, x = stack.pop()
+        if seen[y, x] or not neutral[y, x]:
+            continue
+        seen[y, x] = True
+        for dy, dx in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < h and 0 <= nx < w and not seen[ny, nx]:
+                stack.append((ny, nx))
+    # Cierre morfológico: quita los huecos sueltos del fondo y suaviza el contorno.
+    bg = Image.fromarray((seen * 255).astype(np.uint8)).filter(ImageFilter.MaxFilter(3)).filter(ImageFilter.MinFilter(3))
+    out = img.convert("RGBA")
+    out.putalpha(ImageOps.invert(bg).filter(ImageFilter.GaussianBlur(1.2)))
+    return out
+
+
+def dither(img: Image.Image, w: int, h: int) -> tuple[np.ndarray, np.ndarray]:
+    """Recorte, contraste y difusión de error de Floyd-Steinberg → (tinta, silueta), dos matrices booleanas:
+    tinta = píxel oscuro; silueta = píxel que pertenece a la persona y no al fondo."""
+    rgba = ImageOps.exif_transpose(img).convert("RGBA")
+    sw, sh = rgba.size
+    box = (int(sw * .20), 0, int(sw * .80), int(sh * .68))  # cabeza y hombros: la cara manda
+    def frame(im: Image.Image) -> Image.Image:
+        return ImageOps.fit(im.crop(box), (w * 4, h * 4), method=Image.LANCZOS, centering=(0.5, 0.3))
+    alpha = frame(rgba.getchannel("A"))
+    g = frame(Image.alpha_composite(Image.new("RGBA", rgba.size, "white"), rgba).convert("L"))
+    g = ImageOps.autocontrast(g, cutoff=1)
+    # Gamma < 1 levanta las sombras: el pelo y la chaqueta dejan de ser manchas y conservan textura.
+    g = g.point(lambda v: int(255 * (v / 255) ** 0.62))
+    g = g.filter(ImageFilter.UnsharpMask(radius=3, percent=160, threshold=2))
     a = np.asarray(g.resize((w, h), Image.LANCZOS), dtype=float) / 255.0
     out = np.zeros_like(a, dtype=bool)
     for y in range(h):
@@ -91,7 +130,8 @@ def dither(img: Image.Image, w: int, h: int) -> np.ndarray:
                 a[y + 1, x] += err * 5 / 16
                 if x + 1 < w:
                     a[y + 1, x + 1] += err * 1 / 16
-    return out
+    subject = np.asarray(alpha.resize((w, h), Image.LANCZOS)) > 127
+    return out, subject
 
 
 def dots_path(mask: np.ndarray, x0: float, y0: float, cell: float) -> list[str]:
@@ -107,7 +147,7 @@ def dots_path(mask: np.ndarray, x0: float, y0: float, cell: float) -> list[str]:
                     s = x
                     while x < w and mask[y, x]:
                         x += 1
-                    d.append(f"M{x0 + s * cell:.1f} {y0 + y * cell:.1f}h{(x - s) * cell:.1f}v{cell * .82:.1f}h{-(x - s) * cell:.1f}z")
+                    d.append(f"M{x0 + s * cell:.1f} {y0 + y * cell:.1f}h{(x - s) * cell:.1f}v{cell + .2:.1f}h{-(x - s) * cell:.1f}z")
                 else:
                     x += 1
         bands.append("".join(d))
@@ -116,8 +156,10 @@ def dots_path(mask: np.ndarray, x0: float, y0: float, cell: float) -> list[str]:
 
 # ─── Banner ──────────────────────────────────────────────────────────────────
 
-def banner(theme: str, mask: np.ndarray) -> str:
+def banner(theme: str, ink: np.ndarray, subject: np.ndarray) -> str:
     t = THEMES[theme]
+    # En claro se pinta la tinta; en oscuro, la luz dentro de la silueta, para que no salga un negativo.
+    mask = ink if theme == "light" else subject & ~ink
     W, H = 1180, 560
     px, py, pw, ph = 48, 104, 420, 412
     cell = min((pw - 28) / mask.shape[1], (ph - 56) / mask.shape[0])
@@ -240,10 +282,10 @@ def card(theme: str) -> str:
 
 def main() -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    img = Image.open(SRC) if SRC.exists() else placeholder()
-    mask = dither(img, 150, 160)
+    img = remove_background(Image.open(SRC)) if SRC.exists() else placeholder()
+    ink, subject = dither(img, 150, 160)
     for theme in THEMES:
-        (OUT / f"banner-{theme}.svg").write_text(banner(theme, mask), encoding="utf-8")
+        (OUT / f"banner-{theme}.svg").write_text(banner(theme, ink, subject), encoding="utf-8")
         (OUT / f"card-synapse-{theme}.svg").write_text(card(theme), encoding="utf-8")
     sizes = {p.name: f"{p.stat().st_size / 1024:.0f} KB" for p in sorted(OUT.glob("*.svg"))}
     print(("foto: " + SRC.name) if SRC.exists() else "foto: provisional (falta assets/source/retrato.jpg)", sizes)
