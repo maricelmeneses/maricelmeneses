@@ -128,7 +128,7 @@ def banner(theme: str, mask: np.ndarray) -> str:
     band_svg = "".join(f'<path class="bd" style="animation-delay:{0.25 + i * 1.6 / n_b:.2f}s" d="{d}"/>' for i, d in enumerate(bands) if d)
 
     # Ficha perfil.yml
-    yx, yy, lh = 520, 140, 25
+    yx, yy, lh = 520, 132, 22
     rows = []
     for i, (ind, k, v) in enumerate(YAML):
         x = yx + 30 + ind * 22
@@ -139,7 +139,7 @@ def banner(theme: str, mask: np.ndarray) -> str:
                     f'<tspan x="{x}" fill="{t["key"]}" font-weight="600">{k}</tspan><tspan fill="{t["muted"]}">:</tspan>{val}</text>')
 
     # Histograma que converge a la normal (binomial(12, 1/2)), 13 barras
-    hx, hy, hw, hh = 548, 470, 560, 54
+    hx, hy, hw, hh = 548, 500, 560, 52
     probs = [math.comb(12, k) / 4096 for k in range(13)]
     bw = hw / 13
     bars = "".join(
@@ -189,7 +189,7 @@ def banner(theme: str, mask: np.ndarray) -> str:
 <path d="M{hx} {hy + .5}H{hx + hw}" stroke="{t["line"]}"/>
 {bars}
 <path class="curve" d="{curve}" fill="none" stroke="{t["mint"]}" stroke-width="2.5"/>
-<text x="{hx + hw}" y="{hy + 20}" text-anchor="end" font-family="{MONO}" font-size="11.5" fill="{t["muted"]}">binomial(12; 0,5) → N(6; 3)</text>
+<text x="{hx + hw}" y="{hy + 22}" text-anchor="end" font-family="{MONO}" font-size="11.5" fill="{t["muted"]}">binomial(12; 0,5) → N(6; 3)</text>
 </svg>
 """
 
